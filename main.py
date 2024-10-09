@@ -9,6 +9,8 @@ cap = None
 image_count = 0
 max_images = 10 
 current_frame = None
+encoded_faces = []
+student_names = []
 
 def start_capture():
     
@@ -36,6 +38,32 @@ def start_capture():
     progress_var.set(0)
     progress_bar['maximum'] = max_images  
 
+def capture_images():
+    global is_capturing, current_frame, image_count, max_images, cap, progress_var
+    if not is_capturing:
+        return
+
+    ret, frame = cap.read()
+    if not ret:
+        messagebox.showerror("Error", "Gagal membaca frame dari kamera!")
+        return
+
+    current_frame = frame
+    img_name = f"{folder}/{entry_name.get()}_{image_count + 1}.jpg"
+    cv2.imwrite(img_name, frame)
+    image_count += 1
+
+    progress_var.set(image_count)
+    percentage = (image_count / max_images) * 100
+    percentage_label.config(text=f"{percentage:.0f}%")
+
+    if image_count < max_images:
+        root.after(1000, capture_images)
+    else:
+        cap.release()
+        encode_faces()
+        messagebox.showinfo("Selesai", f"Pengambilan gambar selesai. {max_images} gambar telah diambil dan encoding wajah selesai!")
+        is_capturing = False
 
 root = tk.Tk()
 root.title("Sistem Absensi Pendeteksi Wajah")
