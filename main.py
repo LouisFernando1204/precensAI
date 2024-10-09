@@ -10,10 +10,9 @@ image_count = 0
 max_images = 10 
 current_frame = None
 
-
 def start_capture():
     
-    global is_capturing, cap, image_count, folder, progress_var
+    global is_capturing, cap, folder, progress_var
     student_name = entry_name.get()
     if not student_name:
         messagebox.showwarning("Peringatan", "Masukkan nama mahasiswa terlebih dahulu!")
