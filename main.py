@@ -22,7 +22,6 @@ def start_capture():
     folder = f"dataset/{student_name}"
     os.makedirs(folder, exist_ok=True)
  
-    global cap
     cap = cv2.VideoCapture(0)
  
     if not cap.isOpened():
@@ -32,9 +31,7 @@ def start_capture():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) 
  
-    global current_frame
     is_capturing = True
-    image_count = 0
     messagebox.showinfo("Info", "Mulai merekam gambar. Total 10 gambar akan diambil.")
  
     progress_var.set(0)
