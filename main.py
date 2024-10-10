@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 import cv2
 import face_recognition
+from datetime import datetime
+import numpy as np
 
 # code here
 is_capturing = False
@@ -42,6 +44,7 @@ def start_capture():
 
 def capture_images():
     global is_capturing, current_frame, image_count, max_images, cap, progress_var
+    
     if not is_capturing:
         return
     ret, frame = cap.read()
@@ -133,7 +136,7 @@ def start_attendance():
             face_distances = face_recognition.face_distance(encoded_faces, face_encoding)
             best_match_index = np.argmin(face_distances)
  
-            if matches[best_match_index]:
+            if matches[best_match_index] and face_distances[best_match_index] < 0.4:
                 name = student_names[best_match_index]
             else:
                 name = "Unknown" 
@@ -160,30 +163,39 @@ def start_attendance():
 
 root = tk.Tk()
 root.title("Sistem Absensi Pendeteksi Wajah")
-root.geometry("800x600")
+root.geometry("800x600")  
 
 bg_color = "#2f2f2f"  
 button_bg = "#ffffff"  
 button_fg = "#000000"  
 input_bg = "#ffffff" 
-input_fg = "#000000"
+input_fg = "#000000"  
 
 root.configure(bg=bg_color)
- 
+
 padding_frame = tk.Frame(root, padx=20, pady=20, bg=bg_color)
 padding_frame.pack(expand=True)
+
 label_name = tk.Label(padding_frame, text="Masukkan Nama Mahasiswa:", bg=bg_color, font=("Arial", 14, "bold"), fg="#ffffff")
 label_name.pack(pady=10)
- 
+
 entry_name = tk.Entry(padding_frame, font=("Arial", 14), justify='center', bg=input_bg, fg=input_fg, width=40)
 entry_name.pack(pady=5, padx=10, fill=tk.X)
- 
+
 progress_var = tk.DoubleVar()
 progress_bar = ttk.Progressbar(padding_frame, variable=progress_var, maximum=max_images, length=650, style="TProgressbar")
 progress_bar.pack(pady=5)
+
+style = ttk.Style()
+style.configure("TProgressbar", troughcolor="#ffffff", background="#32CD32", barheight=20)  
+
 percentage_label = tk.Label(padding_frame, text="0%", bg=bg_color, font=("Arial", 14, "bold"), fg="#ffffff")
 percentage_label.pack(pady=(0, 10))  
- 
+
 button_start_capture = tk.Button(padding_frame, text="Scan Wajah", command=start_capture, width=90, height=3, font=("Arial", 12, "bold"), bg=button_bg, fg=button_fg)
 button_start_capture.pack(pady=5)
+
+button_attendance = tk.Button(padding_frame, text="Mulai Presensi", command=start_attendance, width=90, height=3, font=("Arial", 12, "bold"), bg=button_bg, fg=button_fg)
+button_attendance.pack(pady=5)
+
 root.mainloop()
