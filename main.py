@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import messagebox, ttk
 import cv2
+import face_recognition
 
 # code here
 is_capturing = False
@@ -13,7 +14,6 @@ encoded_faces = []
 student_names = []
 
 def start_capture():
-    
     global is_capturing, cap, folder, progress_var
     student_name = entry_name.get()
     if not student_name:
@@ -37,6 +37,8 @@ def start_capture():
  
     progress_var.set(0)
     progress_bar['maximum'] = max_images  
+    
+    capture_images()
 
 def capture_images():
     global is_capturing, current_frame, image_count, max_images, cap, progress_var
@@ -64,6 +66,25 @@ def capture_images():
         encode_faces()
         messagebox.showinfo("Selesai", f"Pengambilan gambar selesai. {max_images} gambar telah diambil dan encoding wajah selesai!")
         is_capturing = False
+
+def encode_faces():
+    global encoded_faces, student_names
+
+    if not os.path.exists('dataset'):
+        messagebox.showwarning("Peringatan", "Dataset tidak ditemukan! Silakan ambil gambar terlebih dahulu.")
+        return
+
+    for student_folder in os.listdir('dataset'):
+        folder_path = f'dataset/{student_folder}'
+        if os.path.isdir(folder_path):
+            for image_file in os.listdir(folder_path):
+                img_path = f'{folder_path}/{image_file}'
+                img = face_recognition.load_image_file(img_path)
+                face_encodings = face_recognition.face_encodings(img)
+
+                if face_encodings:
+                    encoded_faces.append(face_encodings[0])
+                    student_names.append(student_folder)
 
 root = tk.Tk()
 root.title("Sistem Absensi Pendeteksi Wajah")
