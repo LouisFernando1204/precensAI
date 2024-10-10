@@ -85,6 +85,79 @@ def encode_faces():
                     encoded_faces.append(face_encodings[0])
                     student_names.append(student_folder)
 
+def start_attendance():
+    global encoded_faces, student_names
+ 
+    encode_faces()
+ 
+    if not encoded_faces:
+        messagebox.showwarning("Peringatan", "Encode wajah terlebih dahulu!")
+        return
+ 
+    cap = cv2.VideoCapture(0)
+ 
+    if not cap.isOpened():
+        messagebox.showerror("Error", "Kamera tidak dapat dibuka!")
+        return
+ 
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+ 
+    attendance_list = set()
+ 
+    def mark_attendance(name):
+        now = datetime.now()
+        timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
+ 
+        if name not in attendance_list and name != "Unknown":
+            attendance_list.add(name)
+            with open('attendance.csv', 'a') as f:
+                f.write(f'{name},{timestamp}\n')
+            print(f"{name} telah diabsen pada {timestamp}")
+ 
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            messagebox.showerror("Error", "Gagal membaca frame dari kamera!")
+            break
+ 
+        frame = cv2.resize(frame, (640, 480))  
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  
+        face_locations = face_recognition.face_locations(rgb_frame)
+        face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+ 
+        detected_names = []  
+ 
+        for face_encoding, face_location in zip(face_encodings, face_locations):
+            matches = face_recognition.compare_faces(encoded_faces, face_encoding)
+            face_distances = face_recognition.face_distance(encoded_faces, face_encoding)
+            best_match_index = np.argmin(face_distances)
+ 
+            if matches[best_match_index]:
+                name = student_names[best_match_index]
+            else:
+                name = "Unknown" 
+ 
+            detected_names.append(name)  
+            mark_attendance(name)
+ 
+            top, right, bottom, left = face_location
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+            cv2.putText(frame, name, (left + 6, bottom - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 255, 255), 2)
+ 
+        # # Tampilkan semua nama yang terdeteksi
+        # if detected_names:
+        #     print(f"Detected: {', '.join(detected_names)}")
+ 
+        cv2.imshow("Attendance System", frame)
+ 
+        if cv2.waitKey(1) & 0xFF == ord('e'):
+            break
+ 
+    cap.release()
+    cv2.destroyAllWindows()
+    messagebox.showinfo("Selesai", "Proses absensi selesai!")
+
 root = tk.Tk()
 root.title("Sistem Absensi Pendeteksi Wajah")
 root.geometry("800x600")
