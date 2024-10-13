@@ -240,8 +240,11 @@ def start_attendance():
                         label = f"{name} {status}"  
                     else:
                         blink_count = detected_blinks_per_face.get(name, 0)
-                        label = f"{name} ({blink_count})"  
-
+                        if name == "Unknown": 
+                             label = f"{name}"  
+                        else:
+                             label = f"{name} ({blink_count})"  
+                       
                     label_size, _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
                     label_y_min = max(top, label_size[1] + 10)
                     cv2.rectangle(frame, (left, label_y_min - label_size[1] - 10), 
