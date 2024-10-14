@@ -32,7 +32,7 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=10)
  
 def set_random_blink_requirement():
     global required_blinks, detected_blinks
-    required_blinks = random.randint(1, 10) 
+    required_blinks = random.randint(1, 3) 
     detected_blinks = 0
  
 def eye_aspect_ratio(eye_landmarks):
@@ -113,7 +113,7 @@ def capture_images():
         is_capturing = False
  
 def encode_faces():
-    global encoded_faces, student_names
+    global encoded_faces, student_names, image_count
  
     if not os.path.exists('dataset'):
         messagebox.showwarning("Peringatan", "Dataset tidak ditemukan! Silakan ambil gambar terlebih dahulu.")
