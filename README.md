@@ -27,7 +27,7 @@ Welcome to **precensAI**, your cutting-edge AI-powered solution for seamless, au
 - 💻 **Source Code**: [View Code](https://github.com/LouisFernando1204/precensAI)
 - 📊 **Presentation**: [View PPT](https://drive.google.com/file/d/1A3uw0_xFyUVWerzfD22JUXZK_Bz6_B-f/view?usp=sharing)
 
-## Here are some screenshots of **precensAI** in action:
+## 🌟 Take a Peek at precensAI in Action! 📸
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <img src="https://drive.google.com/uc?id=1YvcH4eAPgqWCXQ8K_STBmT6mnVOChMVg" alt="Screenshot 1" style="width: 100%;"/>
     <img src="https://drive.google.com/uc?id=1lq8-oxm-VWPwPxY7T-i67GKQhcoaYHXw" alt="Screenshot 2" style="width: 100%;"/>
