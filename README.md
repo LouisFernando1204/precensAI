@@ -34,3 +34,9 @@ Welcome to **precensAI**, your cutting-edge AI-powered solution for seamless, au
     <img src="https://drive.google.com/uc?id=1qqSr3zyK-98oU7FMmdAveJV2eBWl6iZN" alt="Screenshot 3" style="width: 70%;"/>
     <img src="https://drive.google.com/uc?id=1wtQBIwoL7wD67aLFBf-mHssILBA7K0nn" alt="Screenshot 4" style="width: 70%;"/>
 </div>
+
+## 🤝 Contributors
+- 🧑 Louis Fernando : [@LouisFernando1204](https://github.com/LouisFernando1204)
+- 🧑 Yobel Nathaniel Filipus : [@yebology](https://github.com/yebology)
+- 🧑 Joren Alexander Toding : [@jhwrwe](https://github.com/jhwrwe)
+- 🧑 Steven Gonawan : [@xAnonym101](https://github.com/xAnonym101)
